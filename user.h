@@ -11,6 +11,7 @@ Esta clase sirve para crear usuarios de una red social, con un id, email y su no
 #include <iostream>
 #include <vector>
 #include <string>
+#include <set>
 #include <comment.h>
 #include <post.h>
 
@@ -23,6 +24,7 @@ private:
     string name;
     string email;
     string registrationDate;
+    set<User*> friends;
     vector<Post*> posts;
     vector<Comment*> comments;
 
@@ -32,8 +34,14 @@ public:
     User(int id, const string& name, const string& email, const string& registrationDate): id(id), name(name), email(email), registrationDate(registrationDate) {}
 
     // Metodos
-    void createPost(Post* post);
-    void addComment(Comment* comment);
+    void createPost(Post* post){ posts.push_back(post); }
+    void addComment(Comment* comment){ comments.push_back(comment); }
+    virtual void addFriend(User* user){ friends.insert(user); }
+    virtual void removeFriend(User* user){ friends.erase(user); }
+    void displayProfile() const { 
+        cout << "User: " << name << "\nEmail: " << email; 
+        cout << "You need to add this person as a friend to see their friendlist... :D";
+    }
 
     // Getters
     int getId() const { return id; }
@@ -48,12 +56,35 @@ public:
     void setRegistrationDate(string newRegistrationDate) { registrationDate = newRegistrationDate; }
 
 };
-void User::createPost(Post* post){
-    posts.push_back(post);
-}
 
-void User::addComment(Comment* comment){
-    comments.push_back(comment);
-}
+class Friend: public User {
+private:
+    // Atributos
+    set<User*> friends;
+
+public:
+    // Constructores
+    Friend();
+    Friend(int id, const string& name, const string& email, const string& registrationDate): User(id, name, email, registrationDate){};
+
+    void addFriend(User* user) override {
+        cout << "Adding a close friend: " << user->getName() << endl;
+        User::addFriend(user);
+    }
+
+    void removeFriend(User* user) override {
+        cout << "Removing a close friend: " << user->getName() << endl;
+        User::removeFriend(user);
+    }
+
+    void displayProfile() const { 
+        cout << "User: " << getName() << "\nEmail: " << getEmail(); 
+        cout << "Friends: ";
+        for (const auto& friendUser : friends) {
+            cout << friendUser->getName() << "\n";
+        }
+    }
+
+};
 
 #endif
