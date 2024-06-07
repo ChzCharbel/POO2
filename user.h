@@ -12,10 +12,13 @@ Esta clase sirve para crear usuarios de una red social, con un id, email y su no
 #include <vector>
 #include <string>
 #include <set>
-#include <comment.h>
-#include <post.h>
+#include "comment.h"
+#include "post.h"
 
 using namespace std;
+
+class Post;
+class Comment;
 
 class User {
 private:
@@ -38,9 +41,9 @@ public:
     void addComment(Comment* comment){ comments.push_back(comment); }
     virtual void addFriend(User* user){ friends.insert(user); }
     virtual void removeFriend(User* user){ friends.erase(user); }
-    void displayProfile() const { 
-        cout << "User: " << name << "\nEmail: " << email; 
-        cout << "You need to add this person as a friend to see their friendlist... :D";
+    virtual void displayProfile() const { 
+        cout << "User: " << name << "\nEmail: " << email << "\nFecha de Registro: " << registrationDate << endl; 
+        cout << "Necesitas agregar a esta persona para ver su perfil... :D";
     }
 
     // Getters
@@ -57,14 +60,13 @@ public:
 
 };
 
-class Friend: public User {
+class Friend : public User {
 private:
     // Atributos
     set<User*> friends;
 
 public:
-    // Constructores
-    Friend();
+    // Constructor  
     Friend(int id, const string& name, const string& email, const string& registrationDate): User(id, name, email, registrationDate){};
 
     void addFriend(User* user) override {

@@ -10,26 +10,26 @@ Esta clase permite a los usuarios agregar comentarios a las publicaciones de otr
 #define COMMENT_H_
 #include <iostream>
 #include <string>
-#include <user.h>
-#include <post.h>
+#include "user.h"
+#include "post.h"
 
 using namespace std;
 
+class User;
 class Comment {
 private:
     // Atributos
     int id;
-    string content;
+    string content; 
     string commentDate;
     User* author;
     Post* post;
 public:
-    // Constructores
-    Comment(){}
+    // Constructor
     Comment(int id, const string& content, const string& commentDate, User* author, Post* post): id(id), content(content), commentDate(commentDate), author(author), post(post) {}
 
     // Metodos
-    void display() const;
+    void display() const{ cout << author->getName() << ": " << content << endl; }
 
     // Getters
     int getId() const { return id; }
@@ -39,7 +39,4 @@ public:
     Post* getPost() const { return post; }
 };
 
-void Comment::display() const {
-    cout << author->getName() << ": " << content << endl;
-}
 #endif

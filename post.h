@@ -11,7 +11,7 @@ Esta clase permite a los usuarios crear publicaciones dentro de la red social
 #include <iostream>
 #include <vector>
 #include <string>
-#include <user.h>
+#include "user.h"
 
 using namespace std;
 
@@ -24,16 +24,17 @@ private:
     User* author;
     vector<Comment*> comments;
 public:
-    // Constructores
-    Post(){}
+    // Constructor
     Post(int id, string& content, const string& postDate, User* author): id(id), content(content), postDate(postDate), author(author) {}
 
     // Destructor
     virtual ~Post() = default;
 
     // Metodos
-    void addComment(Comment* comment);
-    virtual void display() const = 0;
+    void addComment(Comment* comment){
+        comments.push_back(comment);
+    };
+    virtual string display() const = 0;
 
     // Getters
     int getId() const { return id; }
@@ -49,8 +50,26 @@ public:
 
 };
 
-void Post::addComment(Comment* comment) {
-    comments.push_back(comment);
-}
+class TextPost : public Post {
+public:
+    TextPost(int id, string& content, const string& postDate, User* author):Post(id, content, postDate, author){}
+
+    string display() const override {
+        return "Text Post: " + getContent() + " by " + getAuthor()->getName();
+    }
+};
+
+class ImagePost : public Post {
+private:
+    string imageURL;
+
+public:
+    ImagePost(int id, string& content, const string& postDate, User* author, const string& imageURL):Post(id, content, postDate, author), imageURL(imageURL) {}
+
+    string display() const override {
+        return "Image Post: " + getContent() + " [Image URL: " + imageURL + "]";
+    }
+
+};
 
 #endif
