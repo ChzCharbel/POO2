@@ -16,6 +16,8 @@ Esta clase permite a los usuarios agregar comentarios a las publicaciones de otr
 using namespace std;
 
 class User;
+class Post;
+
 class Comment {
 private:
     // Atributos
@@ -24,9 +26,10 @@ private:
     string commentDate;
     User* author;
     Post* post;
+
 public:
     // Constructor
-    Comment(int id, const string& content, const string& commentDate, User* author, Post* post): id(id), content(content), commentDate(commentDate), author(author), post(post) {}
+    Comment(int id, const string& content, User* author, Post* post): id(id), content(content), author(author), post(post) {}
 
     // Metodos
     void display() const{ cout << author->getName() << ": " << content << endl; }
@@ -34,9 +37,10 @@ public:
     // Getters
     int getId() const { return id; }
     string getContent() const { return content; }
-    string getCommentDate() const { return commentDate; }
     User* getAuthor() const { return author; }
     Post* getPost() const { return post; }
+
+    ~Comment() = default;
 };
 
 #endif

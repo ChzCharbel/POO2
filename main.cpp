@@ -1,81 +1,53 @@
 #include <iostream>
+#include <vector>
 #include <string>
-#include <random>
+#include "user.h"
 #include "post.h"
 #include "comment.h"
-#include "user.h" 
-
-
 
 using namespace std;
 
-void menu(){
-        cout << "------Bienvenido a esta nueva Red Social------" << endl;
-        cout << "¿Que deseas hacer?" << endl;
-        cout << "1. Crear Perfil Nuevo" << endl;
-        cout << "2. Realizar una publicacion" << endl;
-        cout << "3. Comentar una publicacion" << endl;
-        cout << "4. Agregar Amigo" << endl;
-        cout << "5. Eliminar Amigo" << endl;
-        cout << "6. Revisar publicaciones" << endl;
-        cout << "7. Revisar perfil" << endl; 
-        cout << "8. Salir";
+int main() {
+    vector<User*> users;
+
+    // Crear usuarios
+    User* friendUser = new Friend(1, "Emiliano", 19);
+    User* unknownUser = new Desconocido(2, "Kamila", 19);
+
+    users.push_back(friendUser);
+    users.push_back(unknownUser);
+
+    // Crear un post de texto
+    string postContent = "Hola a todos :D";
+    Post* post1 = new TextPost(1, postContent, friendUser);
+    friendUser->createPost(post1);
+
+    // Crear un comentario
+    string commentContent = "Holaaaa 8)";
+    Comment* comment1 = new Comment(1, commentContent, unknownUser, post1);
+    post1->addComment(comment1);
+    unknownUser->addComment(comment1);
+
+    // Mostrar perfiles
+    cout << "Perfiles de usuarios:" << endl;
+    for (const auto& user : users) {
+        user->displayProfile();
+        cout << endl;
     }
 
-void newProfile(int& contador_perfiles){
-    User perfiles[100];
-    if (contador_perfiles < 100){
-        string name;
-        string email;
-        string currentDate;
-        cout << "Ingresa tu nombre: " << endl;
-        cin >> name;
-        cout << "Ingresa tu correo electronico: " << endl;
-        cin >> email;
-        cout << "Ingresa la fecha de hoy (dd/mm/yyyy): " << endl;
-        cin >> currentDate;
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<int> dis(10001, 99999);
-        int newId = dis(gen);
-        perfiles[contador_perfiles] = User(newId, name, email, currentDate);
-        contador_perfiles++;
-    }
-}
+    // Mostrar posts
+    cout << "\nMostrando posts:" << endl;
+    cout << post1->display() << endl;
 
+    // Mostrar comentarios del post
+    cout << "\nMostrando comentarios del post:" << endl;
+    comment1->display();
 
-int main(){
-    int contador_perfiles = 0;
-    int opcion;
-    bool continua = true;
-    while (continua == true){
-        menu();
-        
-        cout << "Ingresa una opcion (1-8): " << endl;
-        cin >> opcion;
-        switch (opcion){
-        case 1:
-            newProfile(contador_perfiles);
-            break;
-        /*case 2:
-            break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-        case 7:
-            break; */
-        case 8:
-            cout << "Nos vemos pronto :D" << endl;  
-            continua = false;
-            break;    
-        default:
-            break;
-        }
+    // Limpiar memoria
+    for (User* user : users) {
+        delete user;
     }
+
     return 0;
 }
+
