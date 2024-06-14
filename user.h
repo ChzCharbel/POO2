@@ -11,103 +11,89 @@ permite crear usuarios de una red social.
 #define USER_H_
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include <set>
-#include <algorithm>
-#include "comment.h"
 #include "post.h"
 
 using namespace std;
 
-class Comment;
-class Post;
-
 class User {
-private:
+protected:
     // Atributos
-    int id;
     string name;
     int age;
-    vector<Post*> posts;
-    vector<Comment*> comments;
-    set<User*> friends;
+    string tipo;
+    Post* posts[100];
+    int noPost;
 
 public:
     // Contructores
     User(){}
-    User(int id, const string& name, int age) : id(id), name(name), age(age) {}
+    User(const string& name, int age, string tipo) : name(name), age(age), tipo(tipo), noPost(0) {}
 
     // Getters
-    int getId() const { return id; }
     string getName() const { return name; }
     int getAge() const { return age; }
+    string getTipo() const { return tipo; }
 
     // Metodos
-    void createPost(Post* post){ posts.push_back(post); }
-    
-    void deletePost(Post* post){ 
-        auto it = find(posts.begin(), posts.end(), post);
-        if (it != posts.end()) {
-                delete *it;
-                posts.erase(it);
-        }
-    }
-
-    void addComment(Comment* comment){ comments.push_back(comment); }
+    void showPosts();
+    void creaTextPost(string& title, string& content);
+    void creaImagePost(string& title, string& content, const string& imageURL);
     virtual void displayProfile() const = 0;
-    virtual void addFriend(User* user) { friends.insert(user); }
-    virtual void removeFriend(User* user) { friends.erase(user); }
-
-    ~User() { 
-        for (Post* post : posts) {
-            delete post;
-        } for (Comment* comment : comments) {
-            delete comment;
-        }
-    }
+    virtual ~User() = default;
 };
 
-class Friend : public User {
-private:
-    // Atributos
-    set<User*> friends;
+void User::showPosts(){
+    for (auto post : posts){
+        post->display();
+    }
+}
 
+void User::creaTextPost(string& content, string& date){
+    posts[noPost] = new TextPost(content, date);
+    noPost++;
+}
+
+void User::creaImagePost(string& content, string& date, const string& imageURL){
+    posts[noPost] = new ImagePost(content, date, imageURL);
+    noPost++;
+}
+
+class Friend : public User{
+private:
+    string description;
 public:
     // Constructor  
-    Friend(int id, const string& name, int age): User(id, name, age){};
+    Friend(const string& name, int age, string description): User(name, age, "Amigo"), description(description){};
 
-    // Funciones propias de la clase
-    void addFriend(User* user) {
-        cout << "Agregaste a: " << user->getName() << endl;
-        friends.insert(user);
-    }
+    // Getters
+    string getDescription() { return description; }
 
-    void removeFriend(User* user) {
-        cout << "Eliminaste a: " << user->getName() << endl;
-        friends.erase(user);
-    }
+    // Setters
+    void setDescription(string newDescription) { description = newDescription; }
 
-    void displayProfile() const override {
-        cout << "User: " << getName() << "\nAge: " << getAge() << endl;
-        cout << "Friends: ";
-        for (const auto& friendUser : friends) {
-            cout << friendUser->getName() << " ";
-        }
-        cout << endl;
-    }
+    // Metodos
+    void displayProfile() const;
 
 };
+
+void Friend::displayProfile() const {
+    cout << "User: " << name << "\nAge: " << age << endl;
+    cout << "Description: " << description << endl;
+}
 
 class Desconocido : public User {
 public:
     // Constructor  
-    Desconocido(int id, const string& name, int age): User(id, name, age){};
+    Desconocido(const string& name, int age): User(name, age, "Desconocido"){};
 
-    void displayProfile() const override {
-        cout << "User: " << getName() << "\nAge: " << getAge() << endl;
-        cout << "Necesitas agregar a esta persona para ver su perfil... :D" << endl;
-    }
+    //Metodo
+    void displayProfile() const;
 };
+
+void Desconocido::displayProfile() const {
+    cout << "User: " << name << "\nAge: " << age << endl;
+    cout << "Necesitas agregar a esta persona para ver su perfil... :D" << endl;
+}
 
 #endif

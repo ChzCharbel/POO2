@@ -3,75 +3,71 @@ Clase post.h
 Charbel Isaias Chavez Zavala
 A01711950
 
-Esta clase permite a los usuarios crear publicaciones dentro de la red social
+Esta clase permite a los usuarios crear publicaciones dentro de la red social.
+Existen dos tipos de publicaiones, publicaciones de texto y publicaciones con imagen,
+para esto, existe una clase padre llamada Post y dos clases derivadas llamadas TextPost
+e ImagePost
 */
 
 #ifndef POST_H_
 #define POST_H_
 #include <iostream>
-#include <vector>
 #include <string>
-#include "user.h"
-#include "comment.h"
 
 using namespace std;
 
-class User;
-class Comment;
-
-class Post {
+class Post
+{
 private:
     // Atibutos
-    int id;
+    string title;
     string content;
-    User* author;
-    vector<Comment*> comments;
 
 public:
     // Constructor
-    Post(int id, string& content, User* author): id(id), content(content), author(author) {}
+    Post(string &title, string &content) : title(title), content(content) {}
 
     // Metodos
-    void addComment(Comment* comment){ comments.push_back(comment); }
     virtual string display() const = 0;
 
     // Getters
-    int getId() const { return id; }
-    string getContent() const { return content; }
-    User* getAuthor() const { return author; }
+    string getTitle() const { return title; }
+    string getContent() const {return content; }
 
     // Setters
+    void setTitle(string newTitle) { title = newTitle; }
     void setContent(string newContent) { content = newContent; }
 
     // Destructor
-    virtual ~Post() {
-        for (Comment* comment : comments) {
-            delete comment;
-        }
-    }
-
+    virtual ~Post() = default;
 };
 
-class TextPost : public Post {
+class TextPost : public Post
+{
 public:
-    TextPost(int id, string& content, User* author):Post(id, content, author){}
+    TextPost(string &title, string &content) : Post(title, content) {}
 
-    string display() const override {
-        return "Publicacion: " + getContent() + " por " + getAuthor()->getName();
-    }
+    string display() const override;
 };
 
-class ImagePost : public Post {
+string TextPost::display() const {
+    return getTitle() + ": " + getContent() + "\n";
+}
+
+class ImagePost : public Post
+{
 private:
     string imageURL;
 
 public:
-    ImagePost(int id, string& content, User* author, const string& imageURL):Post(id, content, author), imageURL(imageURL) {}
+    ImagePost(string &title, string &content, const string &imageURL) : Post(title, content), imageURL(imageURL) {}
 
-    string display() const override {
-        return "Publicacion (imagen): " + getContent() + " [URL: " + imageURL + "]" + " por " + getAuthor()->getName();
-    }
-
+    string display() const override;
 };
+
+string ImagePost::display() const
+{
+    return getTitle() + ": " + getContent() + "[URL: " + imageURL + "]" + "\n";
+}
 
 #endif
