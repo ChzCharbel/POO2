@@ -50,9 +50,9 @@ public:
  * @return
  */
 void User::showPosts(){
-    for (auto post : posts){
-        post->display();
-    }
+    for (int i = 0; i < noPost; i++) {
+            posts[i]->display();
+    }  
 }
 
 /**

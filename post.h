@@ -28,7 +28,7 @@ public:
     Post(string &title, string &content) : title(title), content(content) {}
 
     // Metodo virtual puro
-    virtual string display() const = 0;
+    virtual void display() const = 0;
 
     // Getters
     string getTitle() const { return title; }
@@ -49,7 +49,7 @@ public:
     TextPost(string &title, string &content) : Post(title, content) {}
 
     // metodo display con sobrecarga
-    string display() const override;
+    void display() const override;
 };
 
 /**
@@ -60,8 +60,8 @@ public:
  * @param
  * @return string con los valores y texto concatenado.
  */
-string TextPost::display() const {
-    return getTitle() + ": " + getContent() + "\n";
+void TextPost::display() const {
+    cout << getTitle() << ": " << getContent() << "\n";
 }
 
 class ImagePost : public Post
@@ -75,7 +75,7 @@ public:
     ImagePost(string &title, string &content, const string &imageURL) : Post(title, content), imageURL(imageURL) {}
 
     // metodo display con sobrecarga
-    string display() const override;
+    void display() const override;
 };
 
 /**
@@ -86,9 +86,9 @@ public:
  * @param
  * @return string con los valores y texto concatenado.
  */
-string ImagePost::display() const
+void ImagePost::display() const
 {
-    return getTitle() + ": " + getContent() + "[URL: " + imageURL + "]" + "\n";
+    cout << getTitle() << ": " << getContent() << ". [URL: " << imageURL << "]" << "\n";
 }
 
 #endif

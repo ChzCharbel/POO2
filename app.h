@@ -118,8 +118,12 @@ void App::muestraUsuarios(string tipo)
  */
 void App::agregaAmigo(string name, int age, string description)
 {
-    users[noUser] = new Friend(name, age, description);
-    noUser++;
+    if (noUser < 100) {
+        users[noUser] = new Friend(name, age, description);
+        noUser++;
+    } else {
+        cout << "No se pueden agregar más usuarios. Límite alcanzado." << endl;
+    }
 }
 
 /**

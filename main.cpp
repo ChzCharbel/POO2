@@ -48,15 +48,15 @@ void addUnknown(App& app, string name, int age){
 }
 
 void createTextPost(App& app, string title, string content, int noUser){
-    app.getUser(noUser)->creaTextPost(title, content);
+    app.getUser(noUser-1)->creaTextPost(title, content);
 }
 
 void createImagePost(App& app, string title, string content, string imageURL, int noUser){
-    app.getUser(noUser)->creaImagePost(title, content, imageURL);
+    app.getUser(noUser-1)->creaImagePost(title, content, imageURL);
 }
 
 void showPosts(App& app, int i){
-    app.getUser(i)->showPosts();
+    app.getUser(i-1)->showPosts();
 }
 
 int main() {
@@ -92,27 +92,29 @@ int main() {
             showProfile(app, i);
             break;
         case 5:
-            cout << "Quien va a realizar una publicacion? ";
+            cout << "Quien va a realizar una publicacion? " << endl;
             showUsers(app);
             cout << "Elige a un usuario: ";
             cin >> i;
             cout << "Titulo: ";
-            cin >> title;
+            cin.ignore();
+            getline(cin, title);
             cout << "Contenido: ";
-            cin >> content;
+            getline(cin, content);
             createTextPost(app, title, content, i);
             break;
         case 6:
-            cout << "Quien va a realizar una publicacion? ";
+            cout << "Quien va a realizar una publicacion? " << endl;
             showUsers(app);
             cout << "Elige a un usuario: ";
             cin >> i;
             cout << "Titulo: ";
-            cin >> title;
+            cin.ignore();
+            getline(cin, title);
             cout << "Contenido: ";
-            cin >> content;
-            cout << "URL de la imagen";
-            cin >> imageURL;
+            getline(cin, content);
+            cout << "URL de la imagen: ";
+            getline(cin, imageURL);
             createImagePost(app, title, content, imageURL, i);
             break;
         case 7:
@@ -121,7 +123,8 @@ int main() {
             cout << "Ingresa la edad de tu amigo: ";
             cin >> age;
             cout << "Describe a tu amigo en una breve oracion: " << endl;
-            cin >> description;
+            cin.ignore();
+            getline(cin, description);
             addFriend(app, name, age, description);
             break;
         case 8:
@@ -132,7 +135,7 @@ int main() {
             addUnknown(app, name, age);
             break;
         case 9:
-            cout << "De quien quieres ver sus publicaciones? ";
+            cout << "De quien quieres ver sus publicaciones? " << endl;
             showUsers(app);
             cout << "Elige a un usuario: ";
             cin >> i;
