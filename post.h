@@ -27,7 +27,7 @@ public:
     // Constructor
     Post(string &title, string &content) : title(title), content(content) {}
 
-    // Metodos
+    // Metodo virtual puro
     virtual string display() const = 0;
 
     // Getters
@@ -45,11 +45,21 @@ public:
 class TextPost : public Post
 {
 public:
+    // constructor
     TextPost(string &title, string &content) : Post(title, content) {}
 
+    // metodo display con sobrecarga
     string display() const override;
 };
 
+/**
+ * display muestra el contenido y atributos de una publicacion que contiene solamente texto.
+ *
+ * devuelve un string con los valores y texto concatenado.
+ *
+ * @param
+ * @return string con los valores y texto concatenado.
+ */
 string TextPost::display() const {
     return getTitle() + ": " + getContent() + "\n";
 }
@@ -57,14 +67,25 @@ string TextPost::display() const {
 class ImagePost : public Post
 {
 private:
+    // atributo
     string imageURL;
 
 public:
+    // constructor
     ImagePost(string &title, string &content, const string &imageURL) : Post(title, content), imageURL(imageURL) {}
 
+    // metodo display con sobrecarga
     string display() const override;
 };
 
+/**
+ * display muestra el contenido y atributos de una publicacion que contiene una imagen.
+ *
+ * devuelve un string con los valores y texto concatenado.
+ *
+ * @param
+ * @return string con los valores y texto concatenado.
+ */
 string ImagePost::display() const
 {
     return getTitle() + ": " + getContent() + "[URL: " + imageURL + "]" + "\n";

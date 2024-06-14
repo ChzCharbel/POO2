@@ -18,16 +18,20 @@ using namespace std;
 class App
 {
 private:
+    // Atributos
     User *users[100];
     int noUser;
 
 public:
+    // Constructor
     App() : noUser(0){};
 
+    // Getter
     User* getUser(int i){
         return users[i];
     }
 
+    // Metodos
     void muestraPerfil(int i);
     void creaUsuarios();
     void muestraUsuarios();
@@ -37,6 +41,12 @@ public:
     void muestraPosts(int i);
 };
 
+/**
+ * creaUsuarios crea ejemplos de usuarios de la red social.
+ *
+ * @param 
+ * @return
+ */
 void App::creaUsuarios()
 {
 
@@ -52,11 +62,23 @@ void App::creaUsuarios()
     noUser++;
 }
 
+/**
+ * muestraPerfil muestra el perfil de un usuario.
+ *
+ * @param int i
+ * @return
+ */
 void App::muestraPerfil(int i)
 {
     users[i - 1]->displayProfile();
 }
 
+/**
+ * muestraUsuarios muestra los usuarios de la red social.
+ *
+ * @param 
+ * @return
+ */
 void App::muestraUsuarios()
 {
     int num = 1;
@@ -67,6 +89,13 @@ void App::muestraUsuarios()
     }
 }
 
+/**
+ * muestraUsuarios muestra los usuarios de la red social
+ * que cuentan con el mismo tipo de usuario (Amigo o Desconocido).
+ *
+ * @param string tipo
+ * @return
+ */
 void App::muestraUsuarios(string tipo)
 {
     int num = 1;
@@ -80,18 +109,36 @@ void App::muestraUsuarios(string tipo)
     }
 }
 
+/**
+ * agregaAmigo agrega un amigo a la red social.
+ *
+ * @param string name, int age, string description
+ * @return
+ */
 void App::agregaAmigo(string name, int age, string description)
 {
     users[noUser] = new Friend(name, age, description);
     noUser++;
 }
 
+/**
+ * agregaUnknown agrega un desconocido a la red social.
+ *
+ * @param string name, int age
+ * @return
+ */
 void App::agregaUnknown(string name, int age)
 {
     users[noUser] = new Desconocido(name, age);
     noUser++;
 }
 
+/**
+ * muestraPosts muestra los posts de un usuario.
+ *
+ * @param int i
+ * @return
+ */
 void App::muestraPosts(int i){
     users[i]->showPosts();
 }

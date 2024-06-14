@@ -43,24 +43,43 @@ public:
     virtual ~User() = default;
 };
 
+/**
+ * showPosts muestra los posts que ha creado el usuario.
+ *
+ * @param
+ * @return
+ */
 void User::showPosts(){
     for (auto post : posts){
         post->display();
     }
 }
 
-void User::creaTextPost(string& content, string& date){
-    posts[noPost] = new TextPost(content, date);
+/**
+ * creatextPost crea un post de texto y lo guarda en el arreglo de posts.
+ *
+ * @param string& title, string& content
+ * @return
+ */
+void User::creaTextPost(string& title, string& content){
+    posts[noPost] = new TextPost(title, content);
     noPost++;
 }
 
-void User::creaImagePost(string& content, string& date, const string& imageURL){
-    posts[noPost] = new ImagePost(content, date, imageURL);
+/**
+ * creaImagePost crea un post de imagen y lo guarda en el arreglo de posts.
+ *
+ * @param string& title, string& content, const string& imageURL
+ * @return
+ */
+void User::creaImagePost(string& title, string& content, const string& imageURL){
+    posts[noPost] = new ImagePost(title, content, imageURL);
     noPost++;
 }
 
 class Friend : public User{
 private:
+    // Atributo
     string description;
 public:
     // Constructor  
@@ -77,6 +96,12 @@ public:
 
 };
 
+/**
+ * displayProfile muestra el perfil del usuario.
+ *
+ * @param 
+ * @return
+ */
 void Friend::displayProfile() const {
     cout << "User: " << name << "\nAge: " << age << endl;
     cout << "Description: " << description << endl;
@@ -91,6 +116,12 @@ public:
     void displayProfile() const;
 };
 
+/**
+ * displayProfile muestra el perfil del usuario.
+ *
+ * @param 
+ * @return
+ */
 void Desconocido::displayProfile() const {
     cout << "User: " << name << "\nAge: " << age << endl;
     cout << "Necesitas agregar a esta persona para ver su perfil... :D" << endl;
