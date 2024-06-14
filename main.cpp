@@ -119,7 +119,8 @@ int main() {
             break;
         case 7:
             cout << "Ingresa el nombre de tu amigo: ";
-            cin >> name;
+            cin.ignore();
+            getline(cin, name);
             cout << "Ingresa la edad de tu amigo: ";
             cin >> age;
             cout << "Describe a tu amigo en una breve oracion: " << endl;
@@ -129,7 +130,8 @@ int main() {
             break;
         case 8:
             cout << "Como se llama este desconocido: ";
-            cin >> name;
+            cin.ignore();
+            getline(cin, name);
             cout << "Que edad tiene (si no la sabes aproximala): ";
             cin >> age;
             addUnknown(app, name, age);
