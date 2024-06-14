@@ -92,7 +92,8 @@ void App::muestraUsuarios()
 /**
  * muestraUsuarios muestra los usuarios de la red social
  * que cuentan con el mismo tipo de usuario (Amigo o Desconocido).
- *
+ * Aqui hay sobreescritura de metodos.
+ * 
  * @param string tipo
  * @return
  */
